@@ -112,7 +112,7 @@ namespace Core.DataAccess.EntityFramework
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<TEntity> GetAsync(List<Expression<Func<TEntity, bool>>> predicates, List<Expression<Func<TEntity, object>>> includeProperties)
+        public async Task<TEntity> GetAsync(List<Expression<Func<TEntity, bool>>> predicates=null, List<Expression<Func<TEntity, object>>> includeProperties = null)
         {
             IQueryable<TEntity> query = _dbSet;
             if (predicates != null && predicates.Any())
