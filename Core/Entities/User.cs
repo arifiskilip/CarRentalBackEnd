@@ -1,4 +1,6 @@
-﻿namespace Core.Entities
+﻿using System.Collections.Generic;
+
+namespace Core.Entities
 {
     public class User : IEntity
     {
@@ -9,6 +11,9 @@
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public bool Status { get; set; }
+
+
+        public ICollection<UserOperationClaim> UserOperationClaims { get; set; }
 
     }
 }

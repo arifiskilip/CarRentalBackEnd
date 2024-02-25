@@ -2,7 +2,6 @@
 using Core.Entities;
 using DataAccess.Abstract;
 using DataAccess.Contexts;
-using Entities.Concrete;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,16 +15,13 @@ namespace DataAccess.Concrete
 
         public List<OperationClaim> GetClaims(User user)
         {
-            var result = from oc in _context.Set<OperationClaim>()
-                         join uoc in _context.Set<UserOperationClaim>()
-                         on oc.Id equals uoc.OperationClaimId
-                         where uoc.UserId == user.Id
-                         select new OperationClaim
-                         {
-                             Id = oc.Id,
-                             Name = oc.Name
-                         };
+            var result = from operationClaim in _context.Set<OperationClaim>()
+                         join userOperationClaim in _context.Set<UserOperationClaim>()
+                             on operationClaim.Id equals userOperationClaim.OperationClaimId
+                         where userOperationClaim.UserId == user.Id
+                         select new OperationClaim { Id = operationClaim.Id, Name = operationClaim.Name };
             return result.ToList();
+
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Business.Concrete
             return new ErrorDataResult<CarImage>(imageResult.Message);
           
         }
-        [SecuredOperation("admin")]
+        [SecuredOperation("admin,member")]
         public async Task<IDataResult<List<CarImage>>> GetAllAsync()
         {
             var carImages = await _carImageDal.GetAllAsync();
