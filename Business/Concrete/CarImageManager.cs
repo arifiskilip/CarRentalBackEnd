@@ -1,6 +1,6 @@
 ﻿using Business.Abstract;
-using Business.Aspects.Autofac;
 using Business.ValidationRules.FluentValidaiton;
+using Core.Aspects.Autofac.SecuredOperation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Business;
 using Core.Utilities.Helpers;
@@ -89,10 +89,5 @@ namespace Business.Concrete
             return new ErrorDataResult<CarImage>("İlgili araç resmi en fazla 5 adet olmalı");
         }
 
-        [SecuredOperation("admin")]
-        public string Deneme()
-        {
-            return "Çalıştı";
-        }
     }
 }

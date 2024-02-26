@@ -5,8 +5,9 @@ using Core.Utilities.Interceptors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
 
-namespace Business.Aspects.Autofac
+namespace Core.Aspects.Autofac.SecuredOperation
 {
     public class SecuredOperation : MethodInterception
     {

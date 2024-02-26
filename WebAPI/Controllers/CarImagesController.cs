@@ -53,13 +53,5 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-
-        [HttpGet]
-
-        public ActionResult Deneme()
-        {
-            return Ok(_carImageService.Deneme());
-        }
-
     }
 }
