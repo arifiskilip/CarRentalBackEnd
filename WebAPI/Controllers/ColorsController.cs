@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -15,14 +16,37 @@ namespace WebAPI.Controllers
             _colorService = colorService;
         }
 
-        [HttpGet]
+        [HttpGet("Get")]
         public async Task<IActionResult> Get(int pageIndex, int pageSize)
         {
-            var result = await _colorService.GetAllByPagination(pageIndex, pageSize);
+            var result = await _colorService.GetAllByPaginationAsync(pageIndex, pageSize);
             if (result.Succes)
             {
                 return Ok(result);
             }
+            return BadRequest(result);
+        }
+
+        [HttpPost("Add")]
+        public async Task<IActionResult> Add(Color color)
+        {
+            var result = await _colorService.AddAsync(color);
+            if (result.Succes)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _colorService.GetAllAsync();
+            if (result.Succes)
+            {
+                return Ok(result);
+            }
+
             return BadRequest(result);
         }
     }
