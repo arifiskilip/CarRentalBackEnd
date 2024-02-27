@@ -91,7 +91,7 @@ namespace Core.DataAccess.EntityFramework
             await Task.Run(() => { _dbSet.Update(entity); });
             return entity;
         }
-        public async Task<List<TEntity>> GetAllAsync(List<Expression<Func<TEntity, bool>>> predicates, List<Expression<Func<TEntity, object>>> includeProperties)
+        public async Task<List<TEntity>> GetAllAsyncV2(List<Expression<Func<TEntity, bool>>> predicates, List<Expression<Func<TEntity, object>>> includeProperties)
         {
             IQueryable<TEntity> query = _dbSet;
             if (predicates != null && predicates.Any())

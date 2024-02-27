@@ -1,13 +1,16 @@
 ﻿using Business.Abstract;
 using Business.ValidationRules.FluentValidaiton;
 using Core.Aspects.Autofac.Validation;
+using Core.Entities;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.UnitOfWork;
 using Entities.Concrete;
 using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Business.Concrete
@@ -31,6 +34,13 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(addedCar, "Ekleme işlemi başarılı!");
         }
 
+        public async Task<IDataResult<List<Car>>> GetAllByBrandIdAndColorIdAsync(int brandId, int colorId)
+        {
+            var result = await _carDal.GetAllAsyncV2(new() { x=>x.BrandId==brandId, x=>x.ColorId == colorId}, new() { x=>x.Brand, x => x.Color, x => x.CarImages });
+
+            return new SuccessDataResult<List<Car>>(result, "Listeleme işlemi başarılı!");
+        }
+
         public async Task<IDataResult<List<Car>>> GetAllWithColorAndBrandAsync()
         {
             var result = await _carDal.GetAllAsync(null, x => x.Brand, x => x.Color, x=>x.CarImages);
@@ -40,13 +50,13 @@ namespace Business.Concrete
 
         public async Task<IDataResult<List<Car>>> GetCarsByBrandIdAsync(int brandId)
         {
-            var result = await _carDal.GetAllAsync(x => x.BrandId == brandId, x => x.Brand, x => x.Color);
+            var result = await _carDal.GetAllAsync(x => x.BrandId == brandId, x => x.Brand, x => x.Color,x=> x.CarImages);
             return new SuccessDataResult<List<Car>>(result, "Listeleme işlemi başarılı!");
         }
 
-        public async Task<IDataResult<List<Car>>> GetCarsByColorIdAsync(int colorId)
+        public async Task<IDataResult<List<Car>>> GetCarsByColorIdAsync(int colorId)    
         {
-            var result = await _carDal.GetAllAsync(x => x.ColorId == colorId, x => x.Brand, x => x.Color);
+            var result = await _carDal.GetAllAsync(x => x.ColorId == colorId, x => x.Brand, x => x.Color, x => x.CarImages);
             return new SuccessDataResult<List<Car>>(result, "Listeleme işlemi başarılı!");
         }
     }

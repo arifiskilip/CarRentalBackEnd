@@ -3,6 +3,7 @@ using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using WebAPI.Extensions;
 
 namespace WebAPI.Controllers
 {
@@ -57,6 +58,11 @@ namespace WebAPI.Controllers
                 return Ok(result);
             }
             return BadRequest();
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetAllByBrandIdAndColorId(int brandId, int colorId)
+        {
+            return await this.HandleResultAsync(_carService.GetAllByBrandIdAndColorIdAsync(brandId, colorId));
         }
     }
 }

@@ -19,6 +19,6 @@ namespace Core.DataAccess.EntityFramework
         Task<List<T>> SearchAsync(List<Expression<Func<T, bool>>> predicates,
             params Expression<Func<T, object>>[] includeProperties);
         Task<T> GetAsync(List<Expression<Func<T, bool>>> predicates=null, List<Expression<Func<T, object>>> includeProperties = null);
-        Task<List<T>> GetAllAsync(List<Expression<Func<T, bool>>> predicates, List<Expression<Func<T, object>>> includeProperties);
+        Task<List<T>> GetAllAsyncV2(List<Expression<Func<T, bool>>> predicates,List<Expression<Func<T, object>>> includeProperties);
     }
 }
