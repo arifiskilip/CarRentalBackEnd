@@ -31,6 +31,13 @@ namespace Business.Concrete
             return new SuccessDataResult<Car>(addedCar, "Ekleme işlemi başarılı!");
         }
 
+        public async Task<IDataResult<List<Car>>> GetAllWithColorAndBrandAsync()
+        {
+            var result = await _carDal.GetAllAsync(null, x => x.Brand, x => x.Color, x=>x.CarImages);
+
+            return new SuccessDataResult<List<Car>>(result, "Listeleme işlemi başarılı!");
+        }
+
         public async Task<IDataResult<List<Car>>> GetCarsByBrandIdAsync(int brandId)
         {
             var result = await _carDal.GetAllAsync(x => x.BrandId == brandId, x => x.Brand, x => x.Color);

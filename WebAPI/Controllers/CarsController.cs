@@ -47,5 +47,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest(result);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllWithColorAndBrandAsync()
+        {
+            var result = await _carService.GetAllWithColorAndBrandAsync();
+            if (result.Succes)
+            {
+                return Ok(result);
+            }
+            return BadRequest();
+        }
     }
 }

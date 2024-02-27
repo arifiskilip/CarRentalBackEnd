@@ -34,6 +34,9 @@ namespace WebAPI
             {
                 opt.UseSqlServer(Configuration.GetConnectionString("SqlServer"));
             });
+
+            // CORS
+            services.AddCors();
             //Controller
             services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -76,6 +79,7 @@ namespace WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
 
+            app.UseCors(opt => opt.WithOrigins("http://localhost:4200/").AllowAnyHeader());
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseRouting();

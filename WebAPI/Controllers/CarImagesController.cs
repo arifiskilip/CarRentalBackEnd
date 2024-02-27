@@ -4,6 +4,7 @@ using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using WebAPI.Extensions;
 
 namespace WebAPI.Controllers
 {
@@ -23,34 +24,20 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var result = await _carImageService.GetAllAsync();
-            if (result.Succes)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return await this.HandleResultAsync(_carImageService.GetAllAsync());
         }
 
         [HttpPost]
         public async Task<IActionResult> Add([FromForm]CarImage carImage, [FromForm] IFormFile file)
         {
-            var result = await _carImageService.AddAsync(carImage, file);
-            if (result.Succes)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+
+            return await this.HandleResultAsync(_carImageService.AddAsync(carImage, file));
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromForm] CarImage carImage, [FromForm] IFormFile file)
         {
-            var result = await _carImageService.UpdateAsync(carImage, file);
-            if (result.Succes)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return await this.HandleResultAsync(_carImageService.UpdateAsync(carImage, file));
         }
 
     }
