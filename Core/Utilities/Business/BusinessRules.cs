@@ -9,7 +9,7 @@ namespace Core.Utilities.Business
         {
             foreach (var result in results)
             {
-                if (!result.Succes)
+                if (!result.Success)
                 {
                     return result;
                 }
@@ -20,7 +20,7 @@ namespace Core.Utilities.Business
         {
             foreach (var result in results)
             {
-                if (!result.Succes)
+                if (!result.Success)
                 {
                     return result;
                 }

@@ -20,13 +20,13 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
             var userToLogin = await _authService.LoginAsync(userForLoginDto);
-            if (!userToLogin.Succes)
+            if (!userToLogin.Success)
             {
                 return BadRequest(userToLogin.Message);
             }
 
             var result = _authService.CreateAccessToken(userToLogin.Data);
-            if (result.Succes)
+            if (result.Success)
             {
                 return Ok(result.Data);
             }
@@ -38,14 +38,14 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
             var userExists = await _authService.UserExistsAsync(userForRegisterDto.Email);
-            if (!userExists.Succes)
+            if (!userExists.Success)
             {
                 return BadRequest(userExists.Message);
             }
 
             var registerResult = await _authService.RegisterAsync(userForRegisterDto, userForRegisterDto.Password);
             //var result = _authService.CreateAccessToken(registerResult.Data);
-            if (registerResult.Succes)
+            if (registerResult.Success)
             {
                 return Ok(registerResult.Data);
             }

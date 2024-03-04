@@ -34,7 +34,7 @@ namespace Business.Concrete
                 return result;
             }
             var imageResult = FileHelper.Add(file);
-            if (imageResult.Succes)
+            if (imageResult.Success)
             {
                 carImage.ImagePath = imageResult.Message;
                 var addedCarImage = await _carImageDal.AddAsync(carImage);
@@ -67,7 +67,7 @@ namespace Business.Concrete
         {
             var getCarImage = await _carImageDal.GetAsync(new() { x=> x.Id==carImage.Id});
             var fileResult = FileHelper.Add(file);
-            if (fileResult.Succes)
+            if (fileResult.Success)
             {
                 FileHelper.Delete(carImage.ImagePath);
                 getCarImage.ImagePath = fileResult.Message;

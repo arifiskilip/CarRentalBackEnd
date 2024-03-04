@@ -1,13 +1,12 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebAPI.Extensions;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]/[action]")]
+	[Route("api/[controller]/[action]")]
     [ApiController]
     public class CarsController : ControllerBase
     {
@@ -21,48 +20,35 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCarsByBrandId(int brandId)
         {
-            var result = await _carService.GetCarsByBrandIdAsync(brandId);
-            if (result.Succes)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return await this.HandleResultAsync(_carService.GetCarsByBrandIdAsync(brandId));
         }
         [HttpGet]
         public async Task<IActionResult> GetCarsByColorId(int colorId)
         {
-            var result = await _carService.GetCarsByColorIdAsync(colorId);
-            if (result.Succes)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+           return await this.HandleResultAsync(_carService.GetCarsByColorIdAsync(colorId));
         }
         [HttpPost]
         public async Task<IActionResult> Add(Car car)
         {
-            var result = await _carService.AddCarAsync(car);
-            if (result.Succes)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
+            return await this.HandleResultAsync(_carService.AddCarAsync(car));
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllWithColorAndBrandAsync()
         {
-            var result = await _carService.GetAllWithColorAndBrandAsync();
-            if (result.Succes)
-            {
-                return Ok(result);
-            }
-            return BadRequest();
+            return await this.HandleResultAsync(_carService.GetAllWithColorAndBrandAsync());
         }
         [HttpGet]
         public async Task<IActionResult> GetAllByBrandIdAndColorId(int brandId, int colorId)
         {
             return await this.HandleResultAsync(_carService.GetAllByBrandIdAndColorIdAsync(brandId, colorId));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCarById(int carId)
+        {
+            return await this.HandleResultAsync(_carService.GetCarByIdAsync(carId));
+        }
+
     }
 }

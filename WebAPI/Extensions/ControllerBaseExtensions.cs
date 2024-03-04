@@ -9,21 +9,21 @@ namespace WebAPI.Extensions
         public static async Task<IActionResult> HandleResultAsync(this ControllerBase controller, Task<IResult> resultTask)
         {
             var result = await resultTask;
-            if (result.Succes)
+            if (result.Success)
             {
                 return controller.Ok(result);
             }
-            return controller.BadRequest(result);
+            return controller.Ok(result);
         }
 
         public static async Task<IActionResult> HandleResultAsync<T>(this ControllerBase controller, Task<IDataResult<T>> resultTask)
         {
             var result = await resultTask;
-            if (result.Succes)
+            if (result.Success)
             {
                 return controller.Ok(result);
             }
-            return controller.BadRequest(result);
+            return controller.Ok(result);
         }
     }
 }

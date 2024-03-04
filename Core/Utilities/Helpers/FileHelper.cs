@@ -13,14 +13,14 @@ namespace Core.Utilities.Helpers
         public static IResult Add(IFormFile file)
         {
             var fileExist = CheckFileExists(file);
-            if (!fileExist.Succes)
+            if (!fileExist.Success)
             {
                 return new ErrorResult(fileExist.Message);
             }
 
             var type = Path.GetExtension(file.FileName);
             var typeValid = CheckFileTypeValid(type);
-            if (!typeValid.Succes)
+            if (!typeValid.Success)
             {
                 return new ErrorResult(typeValid.Message);
             }
@@ -40,14 +40,14 @@ namespace Core.Utilities.Helpers
         public static IResult Update(IFormFile file, string imagePath)
         {
             var fileExist = CheckFileExists(file);
-            if (!fileExist.Succes)
+            if (!fileExist.Success)
             {
                 return new ErrorResult(fileExist.Message);
             }
 
             var type = Path.GetExtension(file.FileName);
             var typeValid = CheckFileTypeValid(type);
-            if (!typeValid.Succes)
+            if (!typeValid.Success)
             {
                 return new ErrorResult(typeValid.Message);
             }

@@ -12,5 +12,6 @@ namespace Business.Abstract
         Task<IDataResult<Car>> AddCarAsync(Car car);
         Task<IDataResult<List<Car>>> GetAllWithColorAndBrandAsync();
         Task<IDataResult<List<Car>>> GetAllByBrandIdAndColorIdAsync(int brandId, int colorId);
+        Task<IDataResult<Car>> GetCarByIdAsync(int carId);
     }
 }

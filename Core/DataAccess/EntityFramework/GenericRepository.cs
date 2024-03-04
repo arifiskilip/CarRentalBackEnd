@@ -131,7 +131,7 @@ namespace Core.DataAccess.EntityFramework
                 }
             }
 
-            return await query.AsNoTracking().SingleOrDefaultAsync();
+            return await query.AsNoTracking().FirstOrDefaultAsync();
         }
     }
 }

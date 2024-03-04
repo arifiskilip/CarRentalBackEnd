@@ -40,6 +40,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CarImageManager>().As<ICarImageService>().SingleInstance();
             builder.RegisterType<CarImageDal>().As<ICarImageDal>().SingleInstance();
 
+			builder.RegisterType<CreditCartManager>().As<ICreditCardService>().SingleInstance();
+			builder.RegisterType<CreditCardDal>().As<ICreditCardDal>().SingleInstance();
+
 
             var asembly = System.Reflection.Assembly.GetExecutingAssembly();
 

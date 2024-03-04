@@ -7,5 +7,7 @@ namespace Business.Abstract
     public interface IRentalService
     {
         Task<IDataResult<Rental>> AddAsync(Rental rental);
-    }
+        Task<IResult> CheckRentalCarAsync(int carId);
+
+	}
 }
