@@ -11,5 +11,9 @@ namespace Business.Abstract
         Task<IDataResult<PaginatedList<Color>>> GetAllByPaginationAsync(int pageIndex, int pageSize);
         Task<IDataResult<Color>> AddAsync(Color color);
         Task<IDataResult<List<Color>>> GetAllAsync();
-    }
+		Task<IDataResult<Color>> GetByIdAsync(int id);
+		Task<IResult> UpdateAsync(Color color);
+		Task<IResult> DeleteAsync(Color color);
+		Task<IResult> DeleteAsync(int id);
+	}
 }

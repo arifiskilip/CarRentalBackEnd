@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants.ResultMessages;
 using Business.ValidationRules.FluentValidaiton;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
@@ -25,7 +26,7 @@ namespace Business.Concrete
         {
             var rentalCar = await _rentalDal.AddAsync(rental);
             await _uow.SaveAsync();
-            return new SuccessDataResult<Rental>(rentalCar, "Kiralama işlemi başarılı!");
+            return new SuccessDataResult<Rental>(rentalCar, Messages.Rental.SuccessRental);
         }
 
 
@@ -34,7 +35,7 @@ namespace Business.Concrete
             var checkCar = await _rentalDal.GetAsync(new() { x => x.CarId == carId });
             if (checkCar != null && !checkCar.IsDelivered)
             {
-                return new ErrorResult("Bu araç şuanda kullanılmaktadır. Lütfen farklı bir araç seçiniz.");
+                return new ErrorResult(Messages.Rental.CarBeingUsed);
             }
             return new SuccessResult();
         } 

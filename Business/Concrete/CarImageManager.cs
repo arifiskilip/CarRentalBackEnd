@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants.ResultMessages;
 using Business.ValidationRules.FluentValidaiton;
 using Core.Aspects.Autofac.SecuredOperation;
 using Core.Aspects.Autofac.Validation;
@@ -39,7 +40,7 @@ namespace Business.Concrete
                 carImage.ImagePath = imageResult.Message;
                 var addedCarImage = await _carImageDal.AddAsync(carImage);
                 await _uow.SaveAsync();
-                return new SuccessDataResult<CarImage>(addedCarImage, "Ekleme işlemi başarılı!");
+                return new SuccessDataResult<CarImage>(addedCarImage,Messages.General.SuccessAdded);
             }
             return new ErrorDataResult<CarImage>(imageResult.Message);
           
@@ -48,7 +49,7 @@ namespace Business.Concrete
         public async Task<IDataResult<List<CarImage>>> GetAllAsync()
         {
             var carImages = await _carImageDal.GetAllAsync();
-            return new SuccessDataResult<List<CarImage>>(carImages,"Listeleme işlemi başarılı.");
+            return new SuccessDataResult<List<CarImage>>(carImages,Messages.General.SuccessfulListing);
         }
 
         public async Task<IDataResult<CarImage>> GetAsync(int id)
@@ -57,9 +58,9 @@ namespace Business.Concrete
             var carImage = await _carImageDal.GetAsync(new() { x=> x.Id == id});
             if (carImage == null)
             {
-                return new ErrorDataResult<CarImage>("İlgili resim bulunamadı!");
+                return new ErrorDataResult<CarImage>(Messages.CarImage.CarImageNotFound);
             }
-            return new SuccessDataResult<CarImage>(carImage, "Başarılı işlem!");
+            return new SuccessDataResult<CarImage>(carImage, Messages.General.SuccessfulListing);
         }
 
         [ValidationAspect(typeof(CarImageValidator))]
@@ -74,7 +75,7 @@ namespace Business.Concrete
                 getCarImage.CarId = carImage.CarId;
                 await _carImageDal.UpdateAsync(getCarImage);
                 await _uow.SaveAsync();
-                return new SuccessDataResult<CarImage>(getCarImage, "Güncelleme işlemi başarılı!");
+                return new SuccessDataResult<CarImage>(getCarImage, Messages.General.SuccessUpdate);
             }
             return new ErrorDataResult<CarImage>(fileResult.Message);
         }
@@ -86,7 +87,7 @@ namespace Business.Concrete
         {
             var result = _carImageDal.CountAsync(x => x.CarId == carId).Result;
             if (result < 5) return new SuccessDataResult<CarImage>();
-            return new ErrorDataResult<CarImage>("İlgili araç resmi en fazla 5 adet olmalı");
+            return new ErrorDataResult<CarImage>(Messages.CarImage.MustHaveFiveCarPictrues);
         }
 
     }

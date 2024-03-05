@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -22,5 +23,26 @@ namespace WebAPI.Controllers
         {
             return await this.HandleResultAsync(_brandService.GetAllAsync());
         }
-    }
+        [HttpGet]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return await this.HandleResultAsync(_brandService.GetByIdAsync(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(Brand brand)
+        {
+            return await this.HandleResultAsync(_brandService.AddAsync(brand));
+        }
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id)
+		{
+			return await this.HandleResultAsync(_brandService.DeleteAsync(id));
+		}
+		[HttpPost]
+		public async Task<IActionResult> Update(Brand brand)
+		{
+			return await this.HandleResultAsync(_brandService.UpdateAsync(brand));
+		}
+	}
 }

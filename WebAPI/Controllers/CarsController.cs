@@ -49,6 +49,16 @@ namespace WebAPI.Controllers
         {
             return await this.HandleResultAsync(_carService.GetCarByIdAsync(carId));
         }
+		[HttpPost]
+		public async Task<IActionResult> Delete(int id)
+		{
+			return await this.HandleResultAsync(_carService.DeleteAsync(id));
+		}
+		[HttpPost]
+		public async Task<IActionResult> Update(Car car)
+		{
+			return await this.HandleResultAsync(_carService.UpdateAsync(car));
+		}
 
-    }
+	}
 }

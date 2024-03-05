@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants.ResultMessages;
 using Core.Entities;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
@@ -37,7 +38,7 @@ namespace Business.Concrete
             };
             await _userService.AddAsync(user);
             await _uow.SaveAsync();
-            return new SuccessDataResult<User>(user, "Kayıt işlemi başarılı!");
+            return new SuccessDataResult<User>(user, Messages.Auth.SuccessRegister);
         }
 
         public async Task<IDataResult<User>> LoginAsync(UserForLoginDto userForLoginDto)
@@ -45,22 +46,22 @@ namespace Business.Concrete
             var userToCheck = await _userService.GetByMailAsync(userForLoginDto.Email);
             if (userToCheck == null)
             {
-                return new ErrorDataResult<User>("Kullanıcı bulunamadı");
+                return new ErrorDataResult<User>(Messages.Auth.UserNotFound);
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
             {
-                return new ErrorDataResult<User>("Kullanıcı adı veye şifre hatalı!");
+                return new ErrorDataResult<User>(Messages.Auth.UsernameOrPaswordNotFound);
             }
 
-            return new SuccessDataResult<User>(userToCheck, "Giriş işlemi başarılı!");
+            return new SuccessDataResult<User>(userToCheck, Messages.Auth.SuccessLogin);
         }
 
         public async Task<IResult> UserExistsAsync(string email)
         {
             if (await _userService.GetByMailAsync(email) != null)
             {
-                return new ErrorResult("Böyle bir kullanıcı zaten mevcut!");
+                return new ErrorResult(Messages.Auth.CurrentUser);
             }
             return new SuccessResult();
         }
@@ -69,7 +70,7 @@ namespace Business.Concrete
         {
             var claims = _userService.GetClaims(user);
             var accessToken = _tokenHelper.CreateToken(user, claims);
-            return new SuccessDataResult<AccessToken>(accessToken, "Token oluşturuldu!");
+            return new SuccessDataResult<AccessToken>(accessToken, Messages.Auth.CreatedToken);
         }
     }
 }

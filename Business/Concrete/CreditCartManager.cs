@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants.ResultMessages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -32,9 +33,9 @@ namespace Business.Concrete
 			});
 			if (resut != null)
 			{
-				return new SuccessResult("Geçerli kredi kartı.");
+				return new SuccessResult(Messages.CreditCard.ValidCard);
 			}
-			return new ErrorResult("Geçersiz kredi kartı.");
+			return new ErrorResult(Messages.CreditCard.InvalidCard);
 		}
 	}
 }

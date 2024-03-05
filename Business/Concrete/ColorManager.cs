@@ -1,35 +1,69 @@
 ﻿using Business.Abstract;
+using Business.Constants.ResultMessages;
 using Core.Aspects.Autofac.Caching;
 using Core.Utilities.Pagination;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.UnitOfWork;
 using Entities.Concrete;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class ColorManager : IColorService
+	public class ColorManager : IColorService
     {
-        private readonly IColorDal _colorDal;
+		private readonly IColorDal _colorDal;
+		private readonly IUow _uow;
 
-        public ColorManager(IColorDal colorDal)
-        {
-            _colorDal = colorDal;
-        }
+		public ColorManager(IColorDal colorDal, IUow uow)
+		{
+			_colorDal = colorDal;
+			_uow = uow;
+		}
 
-        [CacheRemoveAspect("IColorService.Get")]
+		[CacheRemoveAspect("IColorService.Get")]
         public async Task<IDataResult<Color>> AddAsync(Color color)
         {
             var addedColor = await _colorDal.AddAsync(color);
-            return new SuccessDataResult<Color>(addedColor,"Ekeleme işlemi başarılı!");
+            return new SuccessDataResult<Color>(addedColor,Messages.General.SuccessAdded);
         }
-        [CacheAspect]
+
+		public async Task<IResult> DeleteAsync(Color color)
+		{
+			var checkColor = await _colorDal.GetAsync(new()
+			{
+				x=> x.Id == color.Id
+			});
+			if (checkColor != null)
+			{
+				await _colorDal.DeleteAsync(checkColor);
+				await _uow.SaveAsync();
+				return new SuccessResult(Messages.General.SuccessDelete);
+			}
+			return new ErrorResult(Messages.General.ErrorDelete);
+		}
+
+		public async Task<IResult> DeleteAsync(int id)
+		{
+			var checkColor = await _colorDal.GetAsync(new()
+			{
+				x=> x.Id == id
+			});
+			if (checkColor != null)
+			{
+				await _colorDal.DeleteAsync(checkColor);
+				await _uow.SaveAsync();
+				return new SuccessResult(Messages.General.SuccessDelete);
+			}
+			return new ErrorResult(Messages.General.ErrorDelete);
+		}
+
+		[CacheAspect]
         public async Task<IDataResult<List<Color>>> GetAllAsync()
         {
             var result = await _colorDal.GetAllAsync();
-            return new SuccessDataResult<List<Color>>(result, "Listeleme işlemi başarılı!");
+            return new SuccessDataResult<List<Color>>(result, Messages.General.SuccessfulListing);
         }
 
         [CacheAspect]
@@ -37,7 +71,27 @@ namespace Business.Concrete
         {
             var colors = await _colorDal.GetAllAsync();
             var result = PaginatedList<Color>.Create(colors, pageIndex, pageSize);
-            return new SuccessDataResult<PaginatedList<Color>>(result,"Listeleme işlemi başarılı!");
+            return new SuccessDataResult<PaginatedList<Color>>(result,Messages.General.SuccessfulListing);
         }
-    }
+
+		public async Task<IDataResult<Color>> GetByIdAsync(int id)
+		{
+			var checkColor = await _colorDal.GetAsync(new()
+			{
+				x=> x.Id == id
+			});
+			if (checkColor != null)
+			{
+				return new SuccessDataResult<Color>(checkColor, Messages.General.SuccessfulListing);
+			}
+			return new ErrorDataResult<Color>(Messages.General.FailedListing);
+		}
+
+		public async Task<IResult> UpdateAsync(Color color)
+		{
+			await _colorDal.UpdateAsync(color);
+			await _uow.SaveAsync();
+			return new SuccessResult(Messages.General.SuccessUpdate);
+		}
+	}
 }
