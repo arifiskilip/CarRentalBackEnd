@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.ResultMessages;
 using Business.ValidationRules.FluentValidaiton;
+using Core.Aspects.Autofac.SecuredOperation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Pagination;
 using Core.Utilities.Results;
@@ -23,6 +24,7 @@ namespace Business.Concrete
 			_uow = uow;
 		}
 
+		[SecuredOperation("admin")]
 		[ValidationAspect(typeof(ColorValidator))]
         public async Task<IDataResult<Color>> AddAsync(Color color)
         {
@@ -70,6 +72,8 @@ namespace Business.Concrete
 			}
 			return new ErrorDataResult<Color>(Messages.General.FailedListing);
 		}
+
+		[SecuredOperation("admin")]
 		[ValidationAspect(typeof(ColorValidator))]
 		public async Task<IResult> UpdateAsync(Color color)
 		{

@@ -25,7 +25,8 @@ namespace Business.Concrete
             _carImageDal = carImageDal;
             _uow = uow;
         }
-        public async Task<IDataResult<CarImage>> AddAsync(int carId, IFormFile file)
+		[SecuredOperation("admin")]
+		public async Task<IDataResult<CarImage>> AddAsync(int carId, IFormFile file)
         {
             var result = BusinessRules<CarImage>.RunDataResult(CarImageMustBeMaxFive(carId));
             if (result !=null)
@@ -64,7 +65,8 @@ namespace Business.Concrete
             return new SuccessDataResult<CarImage>(carImage, Messages.General.SuccessfulListing);
         }
 
-        [ValidationAspect(typeof(CarImageValidator))]
+		[SecuredOperation("admin")]
+		[ValidationAspect(typeof(CarImageValidator))]
         public async Task<IDataResult<CarImage>> UpdateAsync(CarImage carImage, IFormFile file)
         {
             var getCarImage = await _carImageDal.GetAsync(new() { x=> x.Id==carImage.Id});
@@ -87,6 +89,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarImage>>(result, Messages.General.SuccessfulListing);
 		}
 
+		[SecuredOperation("admin")]
 		public async Task<IResult> DeleteAsync(int carImageId)
 		{
             var checkCarImage = await _carImageDal.GetAsync(new()

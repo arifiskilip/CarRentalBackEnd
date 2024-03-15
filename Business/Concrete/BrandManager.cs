@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.ResultMessages;
 using Business.ValidationRules.FluentValidaiton;
+using Core.Aspects.Autofac.SecuredOperation;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,6 +22,8 @@ namespace Business.Concrete
 			_brandDal = brandDal;
 			_uow = uow;
 		}
+
+		[SecuredOperation("admin")]
 		[ValidationAspect(typeof(BrandValidator))]
 		public async Task<IDataResult<Brand>> AddAsync(Brand brand)
 		{
@@ -43,7 +46,7 @@ namespace Business.Concrete
 		//	}
 		//	return new ErrorResult(Messages.General.ErrorDelete);
 		//}
-
+		[SecuredOperation("admin")]
 		public async Task<IResult> DeleteAsync(int id)
 		{
 			var checkUser = await _brandDal.GetAsync(new()
@@ -77,6 +80,7 @@ namespace Business.Concrete
 			}
 			return new ErrorDataResult<Brand>(Messages.General.FailedListing);
 		}
+		[SecuredOperation("admin")]
 		[ValidationAspect(typeof(BrandValidator))]
 		public async Task<IResult> UpdateAsync(Brand brand)
 		{

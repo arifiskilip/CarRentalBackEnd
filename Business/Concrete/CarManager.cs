@@ -75,20 +75,6 @@ namespace Business.Concrete
 			await _uow.SaveAsync();
 			return new SuccessResult(Messages.General.SuccessUpdate);
 		}
-		public async Task<IResult> DeleteAsync(Car car)
-		{
-			var checkCar = await _carDal.GetAsync(new()
-			{
-				x=> x.Id == car.Id
-			});
-			if (checkCar != null)
-			{
-				await _carDal.DeleteAsync(checkCar);
-				await _uow.SaveAsync();
-				return new SuccessResult(Messages.General.SuccessDelete);
-			}
-			return new ErrorResult(Messages.General.ErrorDelete);
-		}
 
 		public async Task<IResult> DeleteAsync(int id)
 		{
