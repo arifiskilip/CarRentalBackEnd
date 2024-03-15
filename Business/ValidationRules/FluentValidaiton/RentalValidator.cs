@@ -9,7 +9,7 @@ namespace Business.ValidationRules.FluentValidaiton
         public RentalValidator()
         {
             RuleFor(x => x.RentDate).NotEmpty().NotNull();
-            RuleFor(x => x.RentDate).GreaterThanOrEqualTo(DateTime.Now);
+            RuleFor(x => x.RentDate).GreaterThanOrEqualTo(DateTime.Now.AddDays(-1));
         }
     }
 }

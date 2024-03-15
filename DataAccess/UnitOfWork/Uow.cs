@@ -18,7 +18,9 @@ namespace DataAccess.UnitOfWork
 
         public async Task<int> SaveAsync()
         {
-           return await _context.SaveChangesAsync();
-        }
+            await _context.SaveChangesAsync();
+			_context.ChangeTracker.Clear();
+            return 1;
+		}
     }
 }

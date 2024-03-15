@@ -98,7 +98,7 @@ namespace Core.DataAccess.EntityFramework
             {
                 foreach (var predicate in predicates)
                 {
-                    query = query.Where(predicate); // isActive==false && isDeleted==true
+                    query = query.Where(predicate); // isActive==false && is<Delete>d==true
                 }
             }
 

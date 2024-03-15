@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.ResultMessages;
-using Core.Aspects.Autofac.Caching;
+using Business.ValidationRules.FluentValidaiton;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Pagination;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -22,27 +23,12 @@ namespace Business.Concrete
 			_uow = uow;
 		}
 
-		[CacheRemoveAspect("IColorService.Get")]
+		[ValidationAspect(typeof(ColorValidator))]
         public async Task<IDataResult<Color>> AddAsync(Color color)
         {
             var addedColor = await _colorDal.AddAsync(color);
             return new SuccessDataResult<Color>(addedColor,Messages.General.SuccessAdded);
         }
-
-		public async Task<IResult> DeleteAsync(Color color)
-		{
-			var checkColor = await _colorDal.GetAsync(new()
-			{
-				x=> x.Id == color.Id
-			});
-			if (checkColor != null)
-			{
-				await _colorDal.DeleteAsync(checkColor);
-				await _uow.SaveAsync();
-				return new SuccessResult(Messages.General.SuccessDelete);
-			}
-			return new ErrorResult(Messages.General.ErrorDelete);
-		}
 
 		public async Task<IResult> DeleteAsync(int id)
 		{
@@ -59,14 +45,12 @@ namespace Business.Concrete
 			return new ErrorResult(Messages.General.ErrorDelete);
 		}
 
-		[CacheAspect]
         public async Task<IDataResult<List<Color>>> GetAllAsync()
         {
             var result = await _colorDal.GetAllAsync();
             return new SuccessDataResult<List<Color>>(result, Messages.General.SuccessfulListing);
         }
 
-        [CacheAspect]
         public async Task<IDataResult<PaginatedList<Color>>> GetAllByPaginationAsync(int pageIndex, int pageSize)
         {
             var colors = await _colorDal.GetAllAsync();
@@ -86,7 +70,7 @@ namespace Business.Concrete
 			}
 			return new ErrorDataResult<Color>(Messages.General.FailedListing);
 		}
-
+		[ValidationAspect(typeof(ColorValidator))]
 		public async Task<IResult> UpdateAsync(Color color)
 		{
 			await _colorDal.UpdateAsync(color);

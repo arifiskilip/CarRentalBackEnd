@@ -3,6 +3,7 @@ using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using WebAPI.Extensions;
 
 namespace WebAPI.Controllers
 {
@@ -20,8 +21,7 @@ namespace WebAPI.Controllers
 		[HttpGet]
 		public async Task<IActionResult> CheckCreditCard([FromQuery]CreditCard creditCard)
 		{
-			var result = await _creditCardService.CheckCreditCardAsync(creditCard);
-			return Ok(result);
+			return await this.HandleResultAsync(_creditCardService.CheckCreditCardAsync(creditCard));
 		}
 	}
 }

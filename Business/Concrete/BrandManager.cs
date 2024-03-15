@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.ResultMessages;
+using Business.ValidationRules.FluentValidaiton;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.UnitOfWork;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class BrandManager : IBrandService
+	public class BrandManager : IBrandService
     {
         private readonly IBrandDal _brandDal;
 		private readonly IUow _uow;
@@ -19,7 +21,7 @@ namespace Business.Concrete
 			_brandDal = brandDal;
 			_uow = uow;
 		}
-
+		[ValidationAspect(typeof(BrandValidator))]
 		public async Task<IDataResult<Brand>> AddAsync(Brand brand)
 		{
 			var addedBrand = await _brandDal.AddAsync(brand);
@@ -27,20 +29,20 @@ namespace Business.Concrete
 			return new SuccessDataResult<Brand>(addedBrand,Messages.General.SuccessAdded);
 		}
 
-		public async Task<IResult> DeleteAsync(Brand brand)
-		{
-			var checkUser = await _brandDal.GetAsync(new()
-			{
-				x=> x.Id == brand.Id
-			});
-			if (checkUser != null)
-			{
-				await _brandDal.DeleteAsync(checkUser);
-				await _uow.SaveAsync();
-				return new SuccessResult(Messages.General.SuccessDelete);
-			}
-			return new ErrorResult(Messages.General.ErrorDelete);
-		}
+		//public async Task<IResult> DeleteAsync(Brand brand)
+		//{
+		//	var checkUser = await _brandDal.GetAsync(new()
+		//	{
+		//		x=> x.Id == brand.Id
+		//	});
+		//	if (checkUser != null)
+		//	{
+		//		await _brandDal.DeleteAsync(checkUser);
+		//		await _uow.SaveAsync();
+		//		return new SuccessResult(Messages.General.SuccessDelete);
+		//	}
+		//	return new ErrorResult(Messages.General.ErrorDelete);
+		//}
 
 		public async Task<IResult> DeleteAsync(int id)
 		{
@@ -75,7 +77,7 @@ namespace Business.Concrete
 			}
 			return new ErrorDataResult<Brand>(Messages.General.FailedListing);
 		}
-
+		[ValidationAspect(typeof(BrandValidator))]
 		public async Task<IResult> UpdateAsync(Brand brand)
 		{
 			await _brandDal.UpdateAsync(brand);

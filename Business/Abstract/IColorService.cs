@@ -13,7 +13,6 @@ namespace Business.Abstract
         Task<IDataResult<List<Color>>> GetAllAsync();
 		Task<IDataResult<Color>> GetByIdAsync(int id);
 		Task<IResult> UpdateAsync(Color color);
-		Task<IResult> DeleteAsync(Color color);
 		Task<IResult> DeleteAsync(int id);
 	}
 }

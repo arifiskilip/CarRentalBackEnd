@@ -13,7 +13,7 @@ namespace WebAPI.Extensions
             {
                 return controller.Ok(result);
             }
-            return controller.Ok(result);
+            return controller.BadRequest(result);
         }
 
         public static async Task<IActionResult> HandleResultAsync<T>(this ControllerBase controller, Task<IDataResult<T>> resultTask)
@@ -23,7 +23,7 @@ namespace WebAPI.Extensions
             {
                 return controller.Ok(result);
             }
-            return controller.Ok(result);
+            return controller.BadRequest(result);
         }
     }
 }

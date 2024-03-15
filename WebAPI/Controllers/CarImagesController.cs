@@ -28,16 +28,27 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromForm]CarImage carImage, [FromForm] IFormFile file)
+        public async Task<IActionResult> Add([FromForm] int carId, [FromForm] IFormFile file)
         {
 
-            return await this.HandleResultAsync(_carImageService.AddAsync(carImage, file));
+            return await this.HandleResultAsync(_carImageService.AddAsync(carId, file));
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromForm] CarImage carImage, [FromForm] IFormFile file)
+        public async Task<IActionResult> Update([FromForm] CarImage carImage, [FromForm] IFormFile file)
         {
             return await this.HandleResultAsync(_carImageService.UpdateAsync(carImage, file));
+        }
+        [HttpGet]
+        public async Task<IActionResult> CarIdByCarImages(int id)
+        {
+            return await this.HandleResultAsync(_carImageService.GetCarIdByCarImagesAsync(id));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int carImageId)
+        {
+            return await this.HandleResultAsync(_carImageService.DeleteAsync(carImageId));
         }
 
     }

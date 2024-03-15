@@ -34,16 +34,22 @@ namespace WebAPI.Controllers
         {
             return await this.HandleResultAsync(_colorService.GetAllAsync());
         }
-		[HttpPost]
+		[HttpPost("Delete")]
 		public async Task<IActionResult> Delete(int id)
 		{
 			return await this.HandleResultAsync(_colorService.DeleteAsync(id));
 		}
-		[HttpPost]
+		[HttpPost("Update")]
 		public async Task<IActionResult> Update(Color color)
 		{
 			return await this.HandleResultAsync(_colorService.UpdateAsync(color));
 		}
+
+        [HttpGet("GetById")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            return await this.HandleResultAsync(_colorService.GetByIdAsync(id));
+        }
 
 	}
 }
