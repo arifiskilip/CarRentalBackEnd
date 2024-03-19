@@ -1,11 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants.ResultMessages;
 using Core.Entities;
+using Core.Extensions;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
 using DataAccess.UnitOfWork;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Business.Concrete
@@ -14,16 +17,18 @@ namespace Business.Concrete
     {
         private IUserService _userService;
         private ITokenHelper _tokenHelper;
+        private IHttpContextAccessor _contextAccessor;
         private readonly IUow _uow;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IUow uow)
-        {
-            _userService = userService;
-            _tokenHelper = tokenHelper;
-            _uow = uow;
-        }
+		public AuthManager(IUserService userService, ITokenHelper tokenHelper, IUow uow, IHttpContextAccessor contextAccessor)
+		{
+			_userService = userService;
+			_tokenHelper = tokenHelper;
+			_uow = uow;
+			_contextAccessor = contextAccessor;
+		}
 
-        public async Task<IDataResult<User>> RegisterAsync(UserForRegisterDto userForRegisterDto, string password)
+		public async Task<IDataResult<User>> RegisterAsync(UserForRegisterDto userForRegisterDto, string password)
         {
             byte[] passwordHash, passwordSalt;
             HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
@@ -72,5 +77,5 @@ namespace Business.Concrete
             var accessToken = _tokenHelper.CreateToken(user, claims);
             return new SuccessDataResult<AccessToken>(accessToken, Messages.Auth.CreatedToken);
         }
-    }
+	}
 }

@@ -2,6 +2,8 @@
 using DataAccess.Abstract;
 using DataAccess.Contexts;
 using Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
@@ -10,5 +12,11 @@ namespace DataAccess.Concrete
         public CustomerDal(CarRentalContext context) : base(context)
         {
         }
-    }
+
+		public async Task<Customer> GetUserIdByCustomerAsync(int userId)
+		{
+			Customer customer= await this._dbSet.FirstOrDefaultAsync(x => x.UserId == userId);
+			return customer;
+		}
+	}
 }

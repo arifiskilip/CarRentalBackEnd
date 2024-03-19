@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IAuthService
+	public interface IAuthService
     {
         Task<IDataResult<User>> RegisterAsync(UserForRegisterDto userForRegisterDto, string password);
         Task<IDataResult<User>> LoginAsync(UserForLoginDto userForLoginDto);
